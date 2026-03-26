@@ -61,9 +61,9 @@ public class Controller extends MouseAdapter {
             int[] p1 = points.get(0);
 
             if (horizontal) {
-                x = p1[0]; // фиксируем X → глубина по Y
+                x = p1[0];
             } else {
-                y = p1[1]; // фиксируем Y → глубина по X
+                y = p1[1];
             }
             points.add(new int[]{x, y});
 
@@ -74,11 +74,14 @@ public class Controller extends MouseAdapter {
             panel.repaint();
         }
     }
+
     @Override
     public void mouseMoved(MouseEvent e) {
+
         if (mode == Mode.FIRST_POINT) return;
 
         List<int[]> temp = new ArrayList<>(points);
+
         int x = e.getX();
         int y = e.getY();
 
@@ -92,15 +95,31 @@ public class Controller extends MouseAdapter {
 
             if (hor) y = p1[1];
             else x = p1[0];
+
+            temp.add(new int[]{x, y});
+
+            int x1 = p1[0];
+            int y1 = p1[1];
+
+            int rx = Math.min(x1, x);
+            int ry = Math.min(y1, y);
+            int w = Math.abs(x - x1);
+            int h = Math.abs(y - y1);
+
+            panel.preview = new model.Rectangle(rx, ry, w, h, color);
         }
-        if (mode == Mode.THIRD_POINT) {
+        else if (mode == Mode.THIRD_POINT) {
             int[] p1 = points.get(0);
 
             if (horizontal) x = p1[0];
             else y = p1[1];
+
+            temp.add(new int[]{x, y});
+
+            if (temp.size() == factory.requiredPoints()) {
+                panel.preview = factory.create(temp, color);
+            }
         }
-        temp.add(new int[]{x, y});
-        panel.preview = factory.create(temp, color);
         panel.repaint();
     }
 }

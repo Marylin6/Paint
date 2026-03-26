@@ -22,13 +22,10 @@ public class Renderer {
             int h = c.height;
             int d = c.depth;
 
-            // передняя грань
             g.drawRect(x, y, w, h);
 
-            // задняя грань (смещённая)
             g.drawRect(x + d, y - d, w, h);
 
-            // соединяем углы
             g.drawLine(x, y, x + d, y - d);
             g.drawLine(x + w, y, x + w + d, y - d);
             g.drawLine(x, y + h, x + d, y + h - d);

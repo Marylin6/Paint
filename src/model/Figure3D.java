@@ -5,7 +5,7 @@ import java.awt.Color;
 public abstract class Figure3D extends Figure {
     public int x, y, width, height, depth;
 
-    public Figure3D(double x, double y, double width, double height, double depth, Color c) {
+    public Figure3D(int x, int y, int width, int height, int depth, Color c) {
         super(c);
         this.x = x;
         this.y = y;
