@@ -3,14 +3,16 @@ package model;
 import java.awt.Color;
 
 public abstract class Figure3D extends Figure {
-    public double x, y, z;
+    public int x, y, width, height, depth;
 
-    public Figure3D(double x, double y, double z, Color c) {
+    public Figure3D(double x, double y, double width, double height, double depth, Color c) {
         super(c);
         this.x = x;
         this.y = y;
-        this.z = z;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
     }
 
-    public abstract double[][] getVertices();
+    //public abstract double[][] getVertices();
 }
