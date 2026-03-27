@@ -23,8 +23,8 @@ public class MainPanel extends JPanel {
 
         for (Figure f : figures) {
             renderer.draw(g, f);
-            if (preview != null)
-                renderer.draw(g, preview);
         }
+        if (preview != null)
+            renderer.draw(g, preview);
     }
 }

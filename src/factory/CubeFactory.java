@@ -2,6 +2,7 @@ package factory;
 
 import model.*;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CubeFactory implements FigureFactory {
@@ -21,17 +22,31 @@ public class CubeFactory implements FigureFactory {
 
         int width = Math.abs(x2 - x1);
         int height = Math.abs(y2 - y1);
+        int dx = x3 - x1;
+        int dy = y3 - y1;
+        return new Cube(x, y, width, height, dx, dy, c);
+    }
 
-        int depth;
-        int dx = x3 - x2;
-        int dy = y3 - y2;
+    @Override
+    public Figure createPreview(List<int[]> points, int x, int y, Color c) {
+        List<int[]> temp = new ArrayList<>(points);
+        temp.add(new int[]{x, y});
 
-        if (Math.abs(dx) > Math.abs(dy)) {
-            depth = dx;
-        } else {
-            depth = dy;
+        if (temp.size() == 2) {
+            int[] p1 = temp.get(0);
+            int[] p2 = temp.get(1);
+
+            int rx = Math.min(p1[0], p2[0]);
+            int ry = Math.min(p1[1], p2[1]);
+            int w = Math.abs(p2[0] - p1[0]);
+            int h = Math.abs(p2[1] - p1[1]);
+
+            return new Rectangle(rx, ry, w, h, c);
+        }
+        if (temp.size() == 3) {
+            return create(temp, c);
         }
 
-        return new Cube(x, y, width, height, depth, c);
+        return null;
     }
 }

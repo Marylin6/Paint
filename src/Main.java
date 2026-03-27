@@ -2,9 +2,12 @@ import controller.Controller;
 import factory.*;
 import model.Figure;
 import view.MainPanel;
+import view.Toolbar;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Main {
 
@@ -13,13 +16,18 @@ public class Main {
         List<Figure> figures = new ArrayList<>();
         JFrame frame = new JFrame("Editor");
         MainPanel panel = new MainPanel(figures);
-        FigureFactory factory = new CubeFactory();
 
-        Controller contr = new Controller(figures, factory, panel);
-        panel.addMouseListener(contr);
+        Controller contr = new Controller(figures, new LineFactory(), panel);
         panel.addMouseMotionListener(contr);
+        panel.addMouseListener(contr);
 
-        frame.add(panel);
+
+        Toolbar toolbar = new Toolbar(contr);
+
+        frame.setLayout(new BorderLayout());
+        frame.add(toolbar, BorderLayout.WEST);
+        frame.add(panel, BorderLayout.CENTER);
+
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
