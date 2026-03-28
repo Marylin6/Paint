@@ -2,14 +2,12 @@ package view;
 
 import model.*;
 import model.Rectangle;
-import util.Projection;
 
 import java.awt.*;
 
 public class Renderer {
 
     public void draw(Graphics g, Figure f) {
-
         g.setColor(f.color);
 
         if (f instanceof Line l) {
@@ -26,18 +24,18 @@ public class Renderer {
             int dx = c.dx;
             int dy = c.dy;
 
-            // передняя грань
             g.drawRect(x, y, w, h);
-
-            // задняя грань
             g.drawRect(x + dx, y + dy, w, h);
 
-            // рёбра
             g.drawLine(x, y, x + dx, y + dy);
             g.drawLine(x + w, y, x + w + dx, y + dy);
             g.drawLine(x, y + h, x + dx, y + h + dy);
             g.drawLine(x + w, y + h, x + w + dx, y + h + dy);
         }
-
+        if (f instanceof Triangle t) {
+            g.drawLine(t.x1, t.y1, t.x2, t.y2);
+            g.drawLine(t.x2, t.y2, t.x3, t.y3);
+            g.drawLine(t.x1, t.y1, t.x3, t.y3);
+        }
     }
 }
