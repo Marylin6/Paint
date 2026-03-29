@@ -26,6 +26,9 @@ public class Toolbar extends JPanel {
 
         add(createButton("/resources/cube.png",
                 () -> controller.setFactory(new CubeFactory())));
+
+        add(createButton("/resources/tetra.png",
+                () -> controller.setFactory(new TetrahedronFactory())));
     }
 
     private JButton createButton(String path, Runnable action) {
@@ -44,7 +47,7 @@ public class Toolbar extends JPanel {
         btn.setOpaque(false);
 
         btn.setBorder(BorderFactory.createLineBorder(new Color(70, 70, 70)));
-        btn.setBackground(new Color(50, 50, 50));
+        btn.setBackground(new Color(50, 50, 90));
 
         Color hover = new Color(70, 70, 70);
         Color active = new Color(90, 90, 90);

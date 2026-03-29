@@ -14,7 +14,7 @@ public class Controller extends MouseAdapter {
     private enum Mode {
         FIRST_POINT,
         SECOND_POINT,
-        THIRD_POINT
+        LAST_POINT
     }
     private Mode mode = Mode.FIRST_POINT;
 
@@ -25,6 +25,8 @@ public class Controller extends MouseAdapter {
     private MainPanel panel;
     private Color color = Color.BLACK;
 
+    private int secondConter = 0;
+
     public Controller(List<Figure> figures, FigureFactory factory, MainPanel panel) {
         this.figures = figures;
         this.factory = factory;
@@ -33,19 +35,22 @@ public class Controller extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
         int x = e.getX();
         int y = e.getY();
 
         if (mode == Mode.FIRST_POINT) {
             points.clear();
             points.add(new int[]{x, y});
+            secondConter = 0;
             mode = Mode.SECOND_POINT;
         }
         else if (mode == Mode.SECOND_POINT) {
             points.add(new int[]{x, y});
-            if (factory.requiredPoints() == 3) {
-                mode = Mode.THIRD_POINT;
+            secondConter++;
+            if (factory.requiredPoints() > 2) {
+                if (factory.requiredPoints() - secondConter == 2) {
+                    mode = Mode.LAST_POINT;
+                }
                 panel.preview = factory.createPreview(points, x, y, color);
             }
             else {
@@ -56,7 +61,7 @@ public class Controller extends MouseAdapter {
 
             panel.repaint();
         }
-        else if (mode == Mode.THIRD_POINT) {
+        else if (mode == Mode.LAST_POINT) {
             points.add(new int[]{x, y});
 
             figures.add(factory.create(points, color));
