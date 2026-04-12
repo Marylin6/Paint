@@ -25,7 +25,7 @@ public class Controller extends MouseAdapter {
     private MainPanel panel;
     private Color color = Color.BLACK;
 
-    private int secondConter = 0;
+    private int secondCounter = 0;
 
     public Controller(List<Figure> figures, FigureFactory factory, MainPanel panel) {
         this.figures = figures;
@@ -41,14 +41,14 @@ public class Controller extends MouseAdapter {
         if (mode == Mode.FIRST_POINT) {
             points.clear();
             points.add(new int[]{x, y});
-            secondConter = 0;
+            secondCounter = 0;
             mode = Mode.SECOND_POINT;
         }
         else if (mode == Mode.SECOND_POINT) {
             points.add(new int[]{x, y});
-            secondConter++;
+            secondCounter++;
             if (factory.requiredPoints() > 2) {
-                if (factory.requiredPoints() - secondConter == 2) {
+                if (factory.requiredPoints() - secondCounter == 2) {
                     mode = Mode.LAST_POINT;
                 }
                 panel.preview = factory.createPreview(points, x, y, color);

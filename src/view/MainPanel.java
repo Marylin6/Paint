@@ -11,16 +11,16 @@ import java.util.List;
 public class MainPanel extends JPanel {
 
     private List<Figure> figures;
-    private Renderer renderer = new Renderer();
+    private Renderer renderer;
 
     public Figure preview;
 
-    // размеры холста
     private final int canvasWidth = 900;
     private final int canvasHeight = 700;
 
-    public MainPanel(List<Figure> figures) {
+    public MainPanel(List<Figure> figures, Renderer renderer) {
         this.figures = figures;
+        this.renderer = renderer;
         setBackground(new Color(60, 60, 60));
         addComponentListener(new ComponentAdapter() {
             @Override

@@ -17,9 +17,8 @@ public class Toolbar extends JPanel {
         setBackground(new Color(60, 60, 60));
 
         for (Plugin p : plugins) {
-            JButton btn = new JButton(p.getIcon());
-            btn.addActionListener(e -> controller.setFactory(p.getFactory()));
-            add(btn);
+            add(createButton("/resources/default.png",
+                    () -> controller.setFactory(p.getFactory())));
         }
         add(createButton("/resources/line.png",
                 () -> controller.setFactory(new LineFactory())));
