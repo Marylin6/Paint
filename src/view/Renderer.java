@@ -38,13 +38,10 @@ public class Renderer {
             g.drawLine(t.x1, t.y1, t.x3, t.y3);
         }
         if (f instanceof Tetrahedron t) {
-
-            // основание
             g.drawLine(t.x1, t.y1, t.x2, t.y2);
             g.drawLine(t.x2, t.y2, t.x3, t.y3);
             g.drawLine(t.x3, t.y3, t.x1, t.y1);
 
-            // рёбра к вершине
             g.drawLine(t.x1, t.y1, t.x4, t.y4);
             g.drawLine(t.x2, t.y2, t.x4, t.y4);
             g.drawLine(t.x3, t.y3, t.x4, t.y4);
