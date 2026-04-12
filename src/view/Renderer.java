@@ -6,7 +6,6 @@ import model.Rectangle;
 import java.awt.*;
 
 public class Renderer {
-
     public void draw(Graphics g, Figure f) {
         g.setColor(f.color);
 

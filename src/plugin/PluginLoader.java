@@ -16,7 +16,8 @@ public class PluginLoader {
 
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".jar"));
 
-        if (files == null) return plugins;
+        if (files == null)
+            return plugins;
 
         for (File file : files) {
             try {

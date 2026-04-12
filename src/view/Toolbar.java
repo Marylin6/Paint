@@ -2,19 +2,25 @@ package view;
 
 import factory.*;
 import controller.Controller;
+import plugin.Plugin;
 
 import javax.swing.*;
+import java.util.List;
 import java.awt.*;
 import java.util.Objects;
 
 public class Toolbar extends JPanel {
     private JButton selected;
 
-    public Toolbar(Controller controller) {
+    public Toolbar(Controller controller, List<Plugin> plugins) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(new Color(60, 60, 60));
-        //setBackground(Color.DARK_GRAY);
 
+        for (Plugin p : plugins) {
+            JButton btn = new JButton(p.getIcon());
+            btn.addActionListener(e -> controller.setFactory(p.getFactory()));
+            add(btn);
+        }
         add(createButton("/resources/line.png",
                 () -> controller.setFactory(new LineFactory())));
 

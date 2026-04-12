@@ -1,8 +1,11 @@
 import controller.Controller;
 import factory.*;
 import model.Figure;
+import plugin.Plugin;
+import plugin.PluginLoader;
 import view.MainPanel;
 import view.Toolbar;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +24,9 @@ public class Main {
         panel.addMouseMotionListener(contr);
         panel.addMouseListener(contr);
 
-
-        Toolbar toolbar = new Toolbar(contr);
+        String path = System.getProperty("user.dir") + "\\plugins";
+        List<Plugin> plugins = PluginLoader.loadPlugins(path);
+        Toolbar toolbar = new Toolbar(contr, plugins);
 
         frame.setLayout(new BorderLayout());
         frame.add(toolbar, BorderLayout.WEST);
