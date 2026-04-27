@@ -2,9 +2,8 @@ package app;
 
 import app.controller.Controller;
 import app.factory.*;
-import app.model.Figure;
+import api.*;
 import app.plugin.BuiltinPlugin;
-import app.plugin.Plugin;
 import app.plugin.PluginLoader;
 import app.view.*;
 import app.view.Renderer;

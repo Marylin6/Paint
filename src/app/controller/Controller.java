@@ -1,7 +1,6 @@
 package app.controller;
 
-import app.factory.FigureFactory;
-import app.model.Figure;
+import api.*;
 import app.view.MainPanel;
 
 import java.awt.*;

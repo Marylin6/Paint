@@ -1,30 +1,32 @@
 package app.view;
 
 import api.DrawerRegistry;
-import app.model.Figure;
+import api.Figure;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Renderer implements DrawerRegistry {
 
-    private Map<Class<? extends Figure>, Drawer> drawers = new HashMap<>();
+    private final Map<Class<?>, Drawer> drawers = new HashMap<>();
 
     @Override
-    public void register(Class<? extends Figure> clazz, Drawer drawer) {
+    public void registerDrawer(Class<? extends Figure> clazz, Drawer drawer) {
         drawers.put(clazz, drawer);
     }
 
-    public void draw(Graphics g, Figure f) {
-        g.setColor(f.color);
+    public void draw(Graphics g, Figure figure) {
 
-        Drawer d = drawers.get(f.getClass());
+        if (figure == null)
+            return;
 
-        if (d != null) {
-            d.draw(g, f);
-        } else {
-            System.out.println("No drawer for " + f.getClass());
+        g.setColor(figure.color);
+
+        Drawer drawer = drawers.get(figure.getClass());
+
+        if (drawer != null) {
+            drawer.draw(g, figure);
         }
     }
 }

@@ -1,6 +1,9 @@
 package app.factory;
 
+import api.Figure;
+import api.FigureFactory;
 import app.model.*;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;

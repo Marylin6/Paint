@@ -1,8 +1,8 @@
 package app.view;
 
+import api.Plugin;
 import app.factory.*;
 import app.controller.Controller;
-import app.plugin.Plugin;
 
 import javax.swing.*;
 import java.util.List;

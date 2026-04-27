@@ -1,8 +1,9 @@
 package app.plugin;
 
-import app.factory.FigureFactory;
+import api.DrawerRegistry;
+import api.FigureFactory;
+import api.Plugin;
 import app.model.*;
-import app.view.Renderer;
 
 public class BuiltinPlugin implements Plugin {
 
@@ -14,26 +15,26 @@ public class BuiltinPlugin implements Plugin {
         return null;
     }
 
-    public void register(Renderer r) {
+    public void register(DrawerRegistry r) {
 
-        r.register(Line.class, (g, f) -> {
+        r.registerDrawer(Line.class, (g, f) -> {
             Line l = (Line) f;
             g.drawLine(l.x1, l.y1, l.x2, l.y2);
         });
 
-        r.register(Rectangle.class, (g, f) -> {
+        r.registerDrawer(Rectangle.class, (g, f) -> {
             Rectangle rec = (Rectangle) f;
             g.drawRect(rec.x, rec.y, rec.width, rec.height);
         });
 
-        r.register(Triangle.class, (g, f) -> {
+        r.registerDrawer(Triangle.class, (g, f) -> {
             Triangle t = (Triangle) f;
             g.drawLine(t.x1, t.y1, t.x2, t.y2);
             g.drawLine(t.x2, t.y2, t.x3, t.y3);
             g.drawLine(t.x1, t.y1, t.x3, t.y3);
         });
 
-        r.register(Cube.class, (g, f) -> {
+        r.registerDrawer(Cube.class, (g, f) -> {
             Cube c = (Cube) f;
 
             int x = c.x;
@@ -52,7 +53,7 @@ public class BuiltinPlugin implements Plugin {
             g.drawLine(x + w, y + h, x + w + dx, y + h + dy);
         });
 
-        r.register(Tetrahedron.class, (g, f) -> {
+        r.registerDrawer(Tetrahedron.class, (g, f) -> {
             Tetrahedron t = (Tetrahedron) f;
 
             g.drawLine(t.x1, t.y1, t.x2, t.y2);

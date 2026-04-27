@@ -1,7 +1,5 @@
 package api;
 
-import app.model.Figure;
-
 import java.awt.*;
 import java.util.List;
 

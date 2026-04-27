@@ -1,6 +1,6 @@
 package app.view;
 
-import app.model.Figure;
+import api.Figure;
 
 import javax.swing.*;
 import java.awt.*;
