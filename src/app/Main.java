@@ -3,11 +3,12 @@ package app;
 import app.controller.Controller;
 import app.factory.*;
 import api.*;
+import app.io.Serializer;
 import app.plugin.BuiltinPlugin;
+import app.plugin.FigureRegistrator;
 import app.plugin.PluginLoader;
 import app.view.*;
 import app.view.Renderer;
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,9 +24,13 @@ public class Main {
         Renderer renderer = new Renderer();
         new BuiltinPlugin().register(renderer);
 
+        Serializer serializer = new Serializer();
+        FigureRegistrator.registerBuiltins(serializer);
+
         List<Plugin> plugins = PluginLoader.loadPlugins(System.getProperty("user.dir") + "/plugins");
         for (Plugin p : plugins) {
             p.register(renderer);
+            p.registerSerializer(serializer);
         }
 
         MainPanel panel = new MainPanel(figures, renderer);
@@ -34,7 +39,7 @@ public class Main {
         panel.addMouseMotionListener(contr);
         panel.addMouseListener(contr);
 
-        Toolbar toolbar = new Toolbar(contr, plugins);
+        Toolbar toolbar = new Toolbar(contr, plugins, figures, panel, serializer);
 
         frame.setLayout(new BorderLayout());
         frame.add(toolbar, BorderLayout.WEST);

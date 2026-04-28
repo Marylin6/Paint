@@ -3,7 +3,12 @@ package app.plugin;
 import api.DrawerRegistry;
 import api.FigureFactory;
 import api.Plugin;
+import api.SerializerRegistry;
+import app.io.Serializer;
 import app.model.*;
+import app.model.Rectangle;
+
+import java.awt.*;
 
 public class BuiltinPlugin implements Plugin {
 
@@ -64,5 +69,70 @@ public class BuiltinPlugin implements Plugin {
             g.drawLine(t.x2, t.y2, t.x4, t.y4);
             g.drawLine(t.x3, t.y3, t.x4, t.y4);
         });
+    }
+
+    public void registerSerializer(SerializerRegistry serializer) {
+
+        serializer.register("line", el ->
+                new Line(
+                        get(el,"x1"),
+                        get(el,"y1"),
+                        get(el,"x2"),
+                        get(el,"y2"),
+                        color(el)
+                )
+        );
+
+        serializer.register("rectangle", el ->
+                new Rectangle(
+                        get(el,"x"),
+                        get(el,"y"),
+                        get(el,"width"),
+                        get(el,"height"),
+                        color(el)
+                )
+        );
+
+        serializer.register("triangle", el ->
+                new Triangle(
+                        get(el,"x1"), get(el,"y1"),
+                        get(el,"x2"), get(el,"y2"),
+                        get(el,"x3"), get(el,"y3"),
+                        color(el)
+                )
+        );
+
+        serializer.register("cube", el ->
+                new Cube(
+                        get(el,"x"),
+                        get(el,"y"),
+                        get(el,"width"),
+                        get(el,"height"),
+                        get(el,"dx"),
+                        get(el,"dy"),
+                        color(el)
+                )
+        );
+
+        serializer.register("tetrahedron", el ->
+                new Tetrahedron(
+                        get(el,"x1"), get(el,"y1"),
+                        get(el,"x2"), get(el,"y2"),
+                        get(el,"x3"), get(el,"y3"),
+                        get(el,"x4"), get(el,"y4"),
+                        color(el)
+                )
+        );
+    }
+
+    private int get(org.w3c.dom.Element el, String name) {
+        return Integer.parseInt(el.getAttribute(name));
+    }
+
+    private Color color(org.w3c.dom.Element el) {
+        return new Color(
+                Integer.parseInt(el.getAttribute("color")),
+                true
+        );
     }
 }

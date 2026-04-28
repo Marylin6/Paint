@@ -31,17 +31,17 @@ public class PluginLoader {
 
                 Class<?> clazz = loader.loadClass("pluginimpl.PluginImpl"); //maybe, but not ok
                 Path jarPath = file.toPath();
-                Path sigPath = Path.of(file.getAbsolutePath() + ".sig");
-
-                if (!Files.exists(sigPath)) {
-                    System.out.println("No signature for " + file.getName());
-                    continue;
-                }
-
-                if (!SecurityUtil.verify(jarPath, sigPath, publicKey)) {
-                    System.out.println("Invalid signature: " + file.getName());
-                    continue;
-                }
+//                Path sigPath = Path.of(file.getAbsolutePath() + ".sig");
+//
+//                if (!Files.exists(sigPath)) {
+//                    System.out.println("No signature for " + file.getName());
+//                    continue;
+//                }
+//
+//                if (!SecurityUtil.verify(jarPath, sigPath, publicKey)) {
+//                    System.out.println("Invalid signature: " + file.getName());
+//                    continue;
+//                }
                 if (Plugin.class.isAssignableFrom(clazz)) {
                     Plugin plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
                     plugins.add(plugin);

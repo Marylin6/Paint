@@ -2,6 +2,7 @@ package app.io;
 
 import api.Figure;
 import api.FigureLoader;
+import api.SerializerRegistry;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -11,7 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class Serializer {
+public class Serializer implements SerializerRegistry {
 
     private final Map<String, FigureLoader> loaders = new HashMap<>();
 
