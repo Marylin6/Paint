@@ -1,16 +1,17 @@
 package app.plugin;
 
-import api.DrawerRegistry;
-import api.FigureFactory;
-import api.Plugin;
-import api.SerializerRegistry;
-import app.io.Serializer;
+import api.*;
 import app.model.*;
 import app.model.Rectangle;
 
 import java.awt.*;
 
 public class BuiltinPlugin implements Plugin {
+
+    @Override
+    public DataProcessor getProcessor() {
+        return null;
+    }
 
     public String getName() {
         return "builtin";

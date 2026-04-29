@@ -1,5 +1,6 @@
 package app.view;
 
+import api.DataProcessor;
 import api.Figure;
 import api.Plugin;
 import app.factory.*;
@@ -7,14 +8,22 @@ import app.controller.Controller;
 import app.io.Serializer;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import java.util.Objects;
 
+import static java.nio.file.Files.writeString;
+
 public class Toolbar extends JPanel {
     private JButton selected;
+
+    private DataProcessor activeProcessor;
+    private final java.util.List<DataProcessor> processors = new ArrayList<>();
 
     public Toolbar(
             Controller controller,
@@ -31,51 +40,82 @@ public class Toolbar extends JPanel {
             if (plugin.getFactory() != null) {
                 add(createTextButton(plugin.getName(), () -> controller.setFactory(plugin.getFactory())));
             }
+
+            if (plugin.getProcessor() != null) {
+                processors.add(plugin.getProcessor());
+                if (activeProcessor == null)
+                    activeProcessor = plugin.getProcessor();
+                System.out.println(activeProcessor);
+            }
         }
         add(createTextButton("Line", () -> controller.setFactory(new LineFactory())));
-
         add(createTextButton("Triangle", () -> controller.setFactory(new TriangleFactory())));
-
         add(createTextButton("Square", () -> controller.setFactory(new RectangleFactory())));
-
         add(createTextButton("Cube", () -> controller.setFactory(new CubeFactory())));
-
         add(createTextButton("Tetra", () -> controller.setFactory(new TetrahedronFactory())));
 
         add(Box.createVerticalStrut(20));
 
-        add(createTextButton("Save", () -> {
+        add(createTextButton("Save", () -> saveFigures(figures, serializer)));
 
-            JFileChooser chooser = new JFileChooser();
+        add(createTextButton("Load", () -> loadFigures(figures, panel, serializer)));
 
-            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = chooser.getSelectedFile();
-                    String xml = serializer.serialize(figures);
-                    Files.writeString(file.toPath(), xml);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+        add(createTextButton("Settings", () -> {
+            if (activeProcessor != null)
+                activeProcessor.configure();
         }));
+    }
 
-        add(createTextButton("Load", () -> {
+    private void saveFigures(List<Figure> figures, Serializer serializer) {
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                String data = serializer.serialize(figures);
+                if (activeProcessor != null)
+                    data = activeProcessor.processBeforeSave(data);
 
-            JFileChooser chooser = new JFileChooser();
-
-            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = chooser.getSelectedFile();
-                    String xml = Files.readString(file.toPath());
-                    figures.clear();
-                    figures.addAll(serializer.deserialize(xml));
-                    panel.repaint();
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                writeString(chooser.getSelectedFile().toPath(), data);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        }));
+        }
+    }
+
+    private void loadFigures(List<Figure> figures, MainPanel panel, Serializer serializer) {
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                String data = java.nio.file.Files.readString(
+                        chooser.getSelectedFile().toPath()
+                );
+
+                if (activeProcessor != null)
+                    data = activeProcessor.processAfterLoad(data);
+
+                figures.clear();
+                figures.addAll(serializer.deserialize(data));
+                panel.repaint();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private JButton createTextButton(String text, Runnable action) {
+
+        JButton btn = new JButton(text);
+
+        btn.setMaximumSize(new Dimension(80,40));
+        btn.setPreferredSize(new Dimension(80,40));
+
+        btn.setFocusPainted(false);
+        btn.setBackground(new Color(80,80,80));
+        btn.setForeground(Color.WHITE);
+
+        btn.addActionListener(e -> action.run());
+
+        return btn;
     }
 
     private JButton createButton(String path, Runnable action) {
@@ -99,16 +139,16 @@ public class Toolbar extends JPanel {
         Color hover = new Color(70, 70, 70);
         Color active = new Color(90, 90, 90);
 
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
+            public void mouseEntered(MouseEvent e) {
                 if (btn != selected)
                     btn.setBackground(hover);
                 btn.setOpaque(true);
             }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
+            public void mouseExited(MouseEvent e) {
                 if (btn != selected) {
                     btn.setOpaque(false);
                 }
@@ -124,25 +164,8 @@ public class Toolbar extends JPanel {
             btn.setOpaque(true);
             btn.setBackground(active);
             selected = btn;
-
             action.run();
         });
-
-        return btn;
-    }
-
-    private JButton createTextButton(String text, Runnable action) {
-
-        JButton btn = new JButton(text);
-
-        btn.setMaximumSize(new Dimension(80,40));
-        btn.setPreferredSize(new Dimension(80,40));
-
-        btn.setFocusPainted(false);
-        btn.setBackground(new Color(80,80,80));
-        btn.setForeground(Color.WHITE);
-
-        btn.addActionListener(e -> action.run());
 
         return btn;
     }

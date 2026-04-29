@@ -19,12 +19,14 @@ public class Main {
 
     public static void main(String[] args) {
 
+        DataProcessor activeProcessor = null;
         List<Figure> figures = new ArrayList<>();
         JFrame frame = new JFrame("Editor");
         Renderer renderer = new Renderer();
         new BuiltinPlugin().register(renderer);
 
         Serializer serializer = new Serializer();
+
         FigureRegistrator.registerBuiltins(serializer);
 
         List<Plugin> plugins = PluginLoader.loadPlugins(System.getProperty("user.dir") + "/plugins");

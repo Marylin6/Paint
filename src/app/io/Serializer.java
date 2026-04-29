@@ -23,13 +23,9 @@ public class Serializer implements SerializerRegistry {
     public String serialize(List<Figure> figures) {
 
         StringBuilder sb = new StringBuilder();
-
         sb.append("<figures>\n");
-
         for (Figure f : figures) {
-
             sb.append("    <").append(f.getType());
-
             for (var entry : f.getData().entrySet()) {
                 sb.append(" ")
                         .append(entry.getKey())
@@ -38,15 +34,12 @@ public class Serializer implements SerializerRegistry {
                         .append("'");
             }
 
-            sb.append(" color='")
-                    .append(f.color.getRGB())
-                    .append("'");
-
+            sb.append(" color='").append(f.color.getRGB()).append("'");
             sb.append("/>\n");
         }
 
         sb.append("</figures>");
-
+        System.out.print(sb.toString());
         return sb.toString();
     }
 
@@ -71,7 +64,6 @@ public class Serializer implements SerializerRegistry {
                     continue;
 
                 String type = el.getTagName();
-
                 FigureLoader loader = loaders.get(type);
 
                 if (loader != null) {

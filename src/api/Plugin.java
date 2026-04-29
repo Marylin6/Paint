@@ -1,9 +1,8 @@
 package api;
 
-import app.io.Serializer;
-
 public interface Plugin {
 
+    DataProcessor getProcessor();
     String getName();
     FigureFactory getFactory();
     void register(DrawerRegistry registry);
