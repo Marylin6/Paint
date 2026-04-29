@@ -88,4 +88,8 @@ public class Controller extends MouseAdapter {
         mode = Mode.FIRST_POINT;
         panel.preview = null;
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }
