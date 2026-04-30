@@ -3,6 +3,7 @@ package app.view;
 import api.DataProcessor;
 import api.Figure;
 import api.Plugin;
+import app.adapter.ChecksumAdapter;
 import app.factory.*;
 import app.controller.Controller;
 import app.io.Serializer;
@@ -10,8 +11,6 @@ import app.io.Serializer;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -39,14 +38,14 @@ public class Toolbar extends JPanel {
             if (plugin.getFactory() != null) {
                 add(createTextButton(plugin.getName(), () -> controller.setFactory(plugin.getFactory())));
             }
-
             if (plugin.getProcessor() != null) {
                 processors.add(plugin.getProcessor());
                 if (activeProcessor == null)
                     activeProcessor = plugin.getProcessor();
-                System.out.println(activeProcessor);
             }
         }
+        processors.add(new ChecksumAdapter());
+
         add(createTextButton("Line", () -> controller.setFactory(new LineFactory())));
         add(createTextButton("Triangle", () -> controller.setFactory(new TriangleFactory())));
         add(createTextButton("Square", () -> controller.setFactory(new RectangleFactory())));
@@ -61,8 +60,20 @@ public class Toolbar extends JPanel {
         add(createTextButton("Load", () -> loadFigures(figures, panel, serializer)));
 
         add(createTextButton("Settings", () -> {
-            if (activeProcessor != null)
-                activeProcessor.configure();
+            DataProcessor choice = (DataProcessor) JOptionPane.showInputDialog(
+                    this,
+                    "Select Processor:",
+                    "Processor Settings",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    processors.toArray(),
+                    activeProcessor
+            );
+
+            if (choice != null) {
+                activeProcessor = choice;
+                activeProcessor.configure(); // Открываем его настройки
+            }
         }));
     }
 

@@ -39,7 +39,6 @@ public class Serializer implements SerializerRegistry {
         }
 
         sb.append("</figures>");
-        System.out.print(sb.toString());
         return sb.toString();
     }
 
